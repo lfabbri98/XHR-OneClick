@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def poly1(x,a,b):
     return a*x + b
@@ -50,7 +51,7 @@ class Transfer:
         return 0
     
     def calculate_subthreshold(self, minVG, maxVG):
-        ID_log = np.log10(self.ID)
+        ID_log = np.log10(pd.to_numeric(self.ID))
         mask1 = np.where(self.VG>minVG)
         mask2 = np.where(self.VG<maxVG)
         mask = np.intersect1d(mask1, mask2)
