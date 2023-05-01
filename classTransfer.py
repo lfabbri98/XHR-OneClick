@@ -1,0 +1,80 @@
+import numpy as np
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+
+def poly1(x,a,b):
+    return a*x + b
+
+class Transfer:
+
+    #Attributes
+    VG = [] #Gate voltage
+    IG = [] #Gate current
+    VD = [] #Drain voltage
+    ID = [] #Drain current
+    time = 0
+
+    #Functions
+    def __init__(self, VG_init, IG_init, VD_init, ID_init, time):
+        self.VG = VG_init
+        self.ID = abs(ID_init)
+        self.IG = IG_init
+        self.VD = VD_init
+        self.time = time
+
+    #Function to calculate the threshold voltage
+    def calculate_threshold(self, ID_threshold, select="linear"):
+        if select == "linear":
+            mask = np.where(self.ID>ID_threshold)[0]
+            popt, pcov = curve_fit(poly1, self.VG[mask], self.ID[mask])
+            return(-popt[1]/popt[0])
+        elif select=="saturation":
+            ID_sqrt = np.sqrt(self.ID)
+            mask = np.where(ID_sqrt>ID_threshold)[0]
+            popt, pcov = curve_fit(poly1, self.VG[mask], ID_sqrt[mask])
+            return(-popt[1]/popt[0])
+        
+        return 0
+    
+    def calculate_mobility(self, ID_threshold, Cox, W, L, select="linear"):
+        if select == "linear":
+            mask = np.where(self.ID>ID_threshold)[0]
+            popt, pcov = curve_fit(poly1, self.VG[mask], self.ID[mask])
+            return(popt[0]*L/(W*Cox*self.VD[1]))
+        if select == "saturation":
+            ID_sqrt = np.sqrt(self.ID)
+            mask = np.where(ID_sqrt>ID_threshold)[0]
+            popt, pcov = curve_fit(poly1, self.VG[mask], ID_sqrt[mask])
+            return(popt[0]*L*2/(W*Cox))
+        
+        return 0
+    
+    def calculate_subthreshold(self, minVG, maxVG):
+        ID_log = np.log10(self.ID)
+        mask1 = np.where(self.VG>minVG)
+        mask2 = np.where(self.VG<maxVG)
+        mask = np.intersect1d(mask1, mask2)
+        popt, pcov = curve_fit(poly1, self.VG[mask], ID_log[mask])
+        return(1/popt[0])
+
+
+    #Function to plot transfer in log and lin scale
+    def plot_transfer(self):
+        fig, ax = plt.subplots()
+        ax.plot(self.VG, self.ID)
+        ax.set_xlabel("$V_G$ (V)")
+        ax.set_ylabel("$I_D$ (A)")
+
+        fig2, ax2 = plt.subplots()
+        ax2.plot(self.VG, self.ID)
+        ax2.set_yscale("log")
+        ax2.set_xlabel("$V_G$ (V)")
+        ax2.set_ylabel("$I_D$ (A)")
+
+        plt.show()
+
+
+        
+            
+
+
