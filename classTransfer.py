@@ -50,12 +50,9 @@ class Transfer:
         
         return 0
     
-    def calculate_subthreshold(self, minVG, maxVG):
+    def calculate_subthreshold(self, min_index, max_index):
         ID_log = np.log10(pd.to_numeric(self.ID))
-        mask1 = np.where(self.VG>minVG)
-        mask2 = np.where(self.VG<maxVG)
-        mask = np.intersect1d(mask1, mask2)
-        popt, pcov = curve_fit(poly1, self.VG[mask], ID_log[mask])
+        popt, pcov = curve_fit(poly1, self.VG[min_index:max_index], ID_log[min_index:max_index])
         return(1/popt[0])
 
 
