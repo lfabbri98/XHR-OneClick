@@ -1,0 +1,15 @@
+#Configuration file
+#PLEASE DO NOT MODIFY THIS FILE, OTHERWISE IT WOULD BE IMPOSSIBLE TO CORRECTLY INITIALIZE THE PARAMETERS
+#Copy this file and modify it with a different name
+
+#Write the paths in the format "./Transfer/*.dat". In this way the program is independent on the operative system
+#However, you have to specify also the files you want to import, in this case all the files in format .dat will be imported
+#This is achieved with the string /*.dat
+
+[Settings]
+Irradion_Folder_Path = "./Transfer/*.dat"
+Recovery_Folder_Path = "./Transfer/*.dat"
+Cox = 1e-9 #F/cm^2
+W = 4e-6 #m
+L = 8e-6 #m
+Total_dose = 800 #Gy
