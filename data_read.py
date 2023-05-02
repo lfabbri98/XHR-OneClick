@@ -53,8 +53,8 @@ def read_file(path):
 
         obj = ct.Transfer(VG, IG, VD, ID, dt_obj)
         transfers.append(obj)
-    if len(nan_list)>1:
-        transfers[0].time = transfers[1].time-dt.timedelta(seconds=40)
+    #if len(nan_list)>1:
+        #transfers[0].time = transfers[1].time-dt.timedelta(seconds=40)
         
     return transfers
 
