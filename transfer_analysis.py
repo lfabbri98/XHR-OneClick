@@ -141,6 +141,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
     
     #Calculate dose array
     dose = np.linspace(0,Total_dose, len(Vth))
+    dose = np.asarray(dose, dtype="float64")
 
     #Return subthreshold slope
     ss = extraction_subthreshold_slope(data)
