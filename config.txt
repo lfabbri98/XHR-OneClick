@@ -6,10 +6,10 @@
 #However, you have to specify also the files you want to import, in this case all the files in format .dat will be imported
 #This is achieved with the string /*.dat
 
-[Settings]
-Irradion_Folder_Path = "./Transfer/*.dat"
-Recovery_Folder_Path = "./Transfer/*.dat"
-Cox = 1e-9 #F/cm^2
-W = 4e-6 #m
-L = 8e-6 #m
-Total_dose = 800 #Gy
+[settings]
+irradiation_folder_path = ./Transfer/*.dat
+recovery_folder_path = ./Transfer/*.dat
+cox = 1e-9
+W = 4e-6
+L = 8e-6
+Total_dose = 800

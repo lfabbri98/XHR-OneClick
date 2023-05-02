@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 import pandas as pd
+import configparser
 
 def poly1(x,a,b):
     return a*x + b
@@ -71,7 +72,23 @@ class Transfer:
 
         plt.show()
 
+def import_parameters(config_path):
+    config = configparser.ConfigParser()
+    config.read(config_path)
 
+    irrad_path = config.get("settings", "irradiation_folder_path" )
+    rec_path = config.get("settings", "recovery_folder_path" )
+    Cox = config.get("settings","cox")
+    W = config.get("settings","W")
+    L = config.get("settings","L")
+    Total_dose = config.get("settings","Total_dose")
+
+    Cox = float(Cox)
+    W = float(W)
+    L = float(L)
+    Total_dose = float(Total_dose)
+
+    return irrad_path, rec_path, Cox, W, L,Total_dose
         
             
 
