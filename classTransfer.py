@@ -83,12 +83,15 @@ def import_parameters(config_path):
     L = config.get("settings","L")
     Total_dose = config.get("settings","Total_dose")
 
+    outputbool = config.get("output", "SaveData")
+    outputpath = config.get("output", "Output_Path")
+
     Cox = float(Cox)
     W = float(W)
     L = float(L)
     Total_dose = float(Total_dose)
 
-    return irrad_path, rec_path, Cox, W, L,Total_dose
+    return irrad_path, rec_path, Cox, W, L,Total_dose, outputbool, outputpath
         
             
 
