@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+#------------------------
+# Support functions
+#------------------------
+
 def derivative(vector):
     """
     Calculates the derivative function of a vector.
@@ -51,7 +55,6 @@ def replace_zeros(array, small_value=1e-12):
     replaced_array[zero_indices] = small_value
     
     return replaced_array
-
 
 def remove_nans_infs(vector, small_value=1e-12):
     """
@@ -102,7 +105,9 @@ def max_slope_index(vector):
     
     return max_slope_index
 
-
+#------------------------
+# Main analysis functions
+#------------------------
 
 def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "linear"):
     """
