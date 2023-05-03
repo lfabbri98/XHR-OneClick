@@ -29,5 +29,4 @@ alpha = 1
 gamma = 1
 
 [output]
-SaveData = yes
 Output_Path = ./Output_Results/
