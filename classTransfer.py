@@ -73,6 +73,11 @@ class Transfer:
         plt.show()
 
 def import_parameters(config_path):
+    """
+    Function to call config parser and acquire paths and parameters from the configuration file.
+
+    Returns the important parameters of the program.
+    """
     config = configparser.ConfigParser()
     config.read(config_path)
 
