@@ -111,6 +111,9 @@ def max_slope_index(vector):
 def stretched_exponential(x, alpha, gamma, Vth0):
     return Vth0 * np.exp(-x**gamma / alpha)
 
+def poly1(x,a,b):
+    return a*x+b
+
 #------------------------
 # Main analysis functions
 #------------------------
@@ -152,10 +155,22 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
     #Return subthreshold slope
     ss = extraction_subthreshold_slope(data)
 
+    #Linear fit to find sensitivity, when first derivative is zero
+    vth_prime = np.gradient(Vth)
+    islinear = np.where(vth_prime<1/100 * vth_prime)[0]
+    islinear = np.asarray(islinear, dtype=int)
+    try:
+        pl, el = curve_fit(poly1, np.asarray(dose)[islinear], np.asarray(Vth)[islinear])
+        sensitivity = pl[0]
+        error_sensitivity = np.sqrt(np.diag(el))[0]
+    except:
+        sensitivity = 1
+        error_sensitivity=1
+
     #Create the output dataframe
     output = {"Time": times, "Dose": dose, "Vth": Vth, "Mobility":Mu, "SS":ss }
     out = pd.DataFrame(output)
-    return out
+    return out, sensitivity, error_sensitivity
 
 def extraction_subthreshold_slope(data: ct.Transfer):
     ss = []
