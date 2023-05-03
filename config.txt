@@ -5,6 +5,8 @@
 #Write the paths in the format "./Transfer/*.dat". In this way the program is independent on the operative system
 #However, you have to specify also the files you want to import, in this case all the files in format .dat will be imported
 #This is achieved with the string /*.dat
+# Please note that the /\ depends on the operative system --> \:Windows and /:Linux and Mac
+# Change your paths according to them
 
 #For yes/no choices use the correct syntax otherwise the program does not work correctly
 
