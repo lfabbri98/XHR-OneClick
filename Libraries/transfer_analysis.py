@@ -156,7 +156,6 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
     ss = extraction_subthreshold_slope(data)
 
     #Linear fit to find sensitivity, when first derivative is zero
-    vth_prime = np.gradient(Vth)
     islinear = np.where(dose>np.median(dose))[0]
     islinear = np.asarray(islinear, dtype=int)
     try:
