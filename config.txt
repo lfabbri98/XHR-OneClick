@@ -6,6 +6,8 @@
 #However, you have to specify also the files you want to import, in this case all the files in format .dat will be imported
 #This is achieved with the string /*.dat
 
+#For yes/no choices use the correct syntax otherwise the program does not work correctly
+
 [settings]
 irradiation_folder_path = ./Transfer/*.dat
 recovery_folder_path = ./Recovery/*.dat
@@ -13,6 +15,16 @@ cox = 1e-9
 W = 4e-6
 L = 8e-6
 Total_dose = 800
+
+#Use this section to set initial parameters of the recovery fit
+#If UseCustomInitialParameters = no, the parameters are setted automatically
+#A manual choice could be useful if a good fit is not obtained
+
+[recovery]
+UseCustomInitialParameters = no
+Vth0 = 1
+alpha = 1
+gamma = 1
 
 [output]
 SaveData = yes
