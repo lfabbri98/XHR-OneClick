@@ -1,12 +1,12 @@
-import classTransfer as ct
+import Libraries.classTransfer as ct
 import pandas as pd
-import data_read as dr
+import Libraries.data_read as dr
 import matplotlib.pyplot as plt
-import transfer_analysis as ta
+import Libraries.transfer_analysis as ta
 import os
 
 
-def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath):
+def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath, configuration_file):
     irrad = dr.read_folder(Irrad_path)
     irrad_data = ta.extract_transfer_data(irrad, Cox, W, L, Total_dose)
 
@@ -47,6 +47,21 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath):
     ax32.set_title("Subthreshold slope")
     fig3.tight_layout()
 
+    #Recovery
+    rec = dr.read_folder(Rec_path)
+    use_custom_params, p0_rec = ct.read_recovery_fit(configuration_file)
+    rec_analyzed = ta.extract_transfer_data(rec, Cox, W, L, Total_dose)
+    params, errors, rec_fit = ta.recovery_analysis(rec_analyzed, initial_parameters = p0_rec)
+
+    #Figure 4: Scatter plot of recovery with stretched exponential fit
+    fig4, ax4 = plt.subplots()
+    ax4.plot(rec_fit.Time, rec_fit.Vth, marker = 'o')
+    ax4.plot(rec_fit.Time, rec_fit.Fit)
+    ax4.set_xlabel("Time (h)")
+    ax4.set_ylabel("$V_{th}$ (V)")
+    ax4.set_title("Recovery")
+    
+
     #File ouput
     #Creation of output directory, check if existent
     directory_name = outputpath
@@ -59,5 +74,6 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath):
 
 
     irrad_data.to_csv(directory_name+"Transfer_results.txt", sep="\t")
+
 
     plt.show()

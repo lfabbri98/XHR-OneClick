@@ -2,7 +2,7 @@
 This file contains all the function to perform the import of the data from a folder and obtain transfer objects
 """
 
-import classTransfer as ct
+import Libraries.classTransfer as ct
 import pandas as pd
 import numpy as np
 import datetime as dt

@@ -98,6 +98,14 @@ def import_parameters(config_path):
 
     return irrad_path, rec_path, Cox, W, L,Total_dose, outputbool, outputpath
         
-            
 
+def read_recovery_fit(config_path):
+    config = configparser.ConfigParser()
+    config.read(config_path)
 
+    use_custom = config.get("recovery", "UseCustomInitialParameters")
+    Vth0 = config.get("recovery","Vth0")
+    alpha = config.get("recovery","alpha")
+    gamma = config.get("recovery","gamma")
+
+    return use_custom, [float(alpha), float(gamma), float(Vth0)]

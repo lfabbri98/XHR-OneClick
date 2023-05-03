@@ -1,7 +1,9 @@
-import classTransfer as ct
+import Libraries.classTransfer as ct
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+import datetime
 
 #------------------------
 # Support functions
@@ -84,6 +86,7 @@ def remove_nans_infs(vector, small_value=1e-12):
     return cleaned_vector
 
 def max_slope_index(vector):
+
     """
     Finds the index with the maximum slope of a NumPy array.
     
@@ -104,6 +107,9 @@ def max_slope_index(vector):
     max_slope_index = np.argmax(slopes)
     
     return max_slope_index
+
+def stretched_exponential(x, alpha, gamma, Vth0):
+    return Vth0 * np.exp(-x**gamma / alpha)
 
 #------------------------
 # Main analysis functions
@@ -178,3 +184,29 @@ def extraction_subthreshold_slope(data: ct.Transfer):
         ss.append(1)
     
     return ss
+
+def recovery_analysis(data, initial_parameters):
+    """
+    Data should be a dataframe of the type returned by extract transfer data.
+
+    This function fits the dataframe given as input with a stretched exponential to extract the parameters
+    """
+
+    #Initialize variables for fit
+    X = []
+    for i in data.Time:
+        X.append(i.total_seconds()/3600)
+    Y = data.Vth
+
+    popt, pcov = curve_fit(stretched_exponential, X, Y, p0=initial_parameters)
+
+    err = np.sqrt(np.diag(pcov))
+
+    fitted = stretched_exponential(X, *popt)
+
+    data_out = {"Time":X, "Vth": Y, "Fit": fitted}
+    data_out_df = pd.DataFrame(data_out)
+
+    return popt,err, data_out_df
+
+

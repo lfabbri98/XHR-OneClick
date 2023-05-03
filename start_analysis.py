@@ -13,17 +13,17 @@ configuration_file = "./config.txt"
 # Import libraries
 #------------------------
 
-import main
-import classTransfer
+import Libraries.main
+import Libraries.classTransfer
 
 #------------------------
 # Read parameters
 #------------------------
 
-Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath = classTransfer.import_parameters(config_path=configuration_file)
+Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath = Libraries.classTransfer.import_parameters(config_path=configuration_file)
 
 #------------------------
 # Start execution
 #------------------------
 
-main.main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath)
+Libraries.main.main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputbool, outputpath, configuration_file)
