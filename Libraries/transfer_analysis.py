@@ -157,20 +157,20 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
 
     #Linear fit to find sensitivity, when first derivative is zero
     vth_prime = np.gradient(Vth)
-    islinear = np.where(vth_prime<1/100 * vth_prime)[0]
+    islinear = np.where(dose>np.median(dose))[0]
     islinear = np.asarray(islinear, dtype=int)
     try:
         pl, el = curve_fit(poly1, np.asarray(dose)[islinear], np.asarray(Vth)[islinear])
-        sensitivity = pl[0]
-        error_sensitivity = np.sqrt(np.diag(el))[0]
+        par = pl
+        err = np.sqrt(np.diag(el))
     except:
-        sensitivity = 1
-        error_sensitivity=1
+        par = [1,1]
+        err = [1,1]
 
     #Create the output dataframe
     output = {"Time": times, "Dose": dose, "Vth": Vth, "Mobility":Mu, "SS":ss }
     out = pd.DataFrame(output)
-    return out, sensitivity, error_sensitivity
+    return out, par, err
 
 def extraction_subthreshold_slope(data: ct.Transfer):
     ss = []
