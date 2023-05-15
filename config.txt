@@ -28,5 +28,12 @@ Vth0 = 1
 alpha = 1
 gamma = 1
 
+#Use this section to provide the input for the recovery model
+#Times are in hours
+
+[model]
+irradiation_time = 1
+observation_time = 24
+
 [output]
 Output_Path = ./Output_Results/
