@@ -56,12 +56,15 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_
 
     #Figure 4: Scatter plot of recovery with stretched exponential fit
     fig4, ax4 = plt.subplots()
-    ax4.plot(rec_fit.Time, rec_fit.Vth, marker = 'o', label="Experimental data")
-    ax4.plot(rec_fit.Time, rec_fit.Fit, label="Stretched exponential fit")
+    ax4.plot(rec_fit.Time/3600, rec_fit.Vth, marker = 'o', label="Experimental data")
+    ax4.plot(rec_fit.Time/3600, rec_fit.Fit, label="Stretched exponential fit")
     ax4.set_xlabel("Time (h)")
     ax4.set_ylabel("$V_{th}$ (V)")
     ax4.set_title("Recovery")
     plt.legend(loc='best')
+
+    #Code to solve model
+    model_parameters = ct.read_model_parameters(configuration_file)
     
     #Create file with output parameters
     names_params = ["Type","Sensitivity (V/Gy)", "alpha (1/h)", "gamma", "Vth0 (V)"]

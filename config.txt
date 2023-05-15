@@ -11,8 +11,8 @@
 #For yes/no choices use the correct syntax otherwise the program does not work correctly
 
 [settings]
-irradiation_folder_path = ./Transfer/*.dat
-recovery_folder_path = ./Recovery/*.dat
+irradiation_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Transfer/*.dat
+recovery_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Recovery/*.dat
 cox = 1e-9
 W = 4e-6
 L = 8e-6
@@ -23,10 +23,10 @@ Total_dose = 800
 #A manual choice could be useful if a good fit is not obtained
 
 [recovery]
-UseCustomInitialParameters = no
-Vth0 = 1
-alpha = 1
-gamma = 1
+UseCustomInitialParameters = yes
+Vth0 = -6
+alpha = 30
+gamma = 0.5
 
 #Use this section to provide the input for the recovery model
 #Times are in hours
