@@ -146,7 +146,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
     for i,j in enumerate(data):
         Vth.append(j.calculate_threshold(ID_min_select))
         Mu.append(j.calculate_mobility(ID_min_select, Cox, W, L, regime))
-        times.append(j.time-data[0].time) #Relative time from beginning of measure
+        times.append((j.time-data[0].time).total_seconds()) #Relative time from beginning of measure
     
     #Calculate dose array
     dose = np.linspace(0,Total_dose, len(Vth))
@@ -207,9 +207,7 @@ def recovery_analysis(data, initial_parameters):
     """
 
     #Initialize variables for fit
-    X = []
-    for i in data.Time:
-        X.append(i.total_seconds()/3600)
+    X = data.Time
     Y = data.Vth
 
     popt, pcov = curve_fit(stretched_exponential, X, Y, p0=initial_parameters)

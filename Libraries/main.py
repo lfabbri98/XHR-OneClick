@@ -82,6 +82,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_
     print("Directory", directory_name, "created.")
 
     irrad_data.to_csv(directory_name+"Transfer_results.txt", sep="\t")
+    rec_fit.to_csv(directory_name+"Recovery_output.txt", sep="\t")
     output_params.to_csv(directory_name+"Parameters_output.txt", sep="\t")
 
     plt.show()
