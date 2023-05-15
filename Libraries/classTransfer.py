@@ -108,3 +108,12 @@ def read_recovery_fit(config_path):
     gamma = config.get("recovery","gamma")
 
     return use_custom, [float(alpha), float(gamma), float(Vth0)]
+
+def read_model_parameters(config_path):
+    config = configparser.ConfigParser()
+    config.read(config_path)
+
+    irradiation_time = config.get("model","irradiation_time")
+    observation_time = config.get("model", "observation_time")
+
+    return[float(irradiation_time), float(observation_time)]
