@@ -148,6 +148,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
         Mu.append(j.calculate_mobility(ID_min_select, Cox, W, L, regime))
         times.append((j.time-data[0].time).total_seconds()) #Relative time from beginning of measure
     
+    first_time = data[0].time
     #Calculate dose array
     dose = np.linspace(0,Total_dose, len(Vth))
     dose = np.asarray(dose, dtype="float64")
@@ -169,7 +170,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
     #Create the output dataframe
     output = {"Time": times, "Dose": dose, "Vth": Vth, "Mobility":Mu, "SS":ss }
     out = pd.DataFrame(output)
-    return out, par, err
+    return out, par, err, first_time
 
 def extraction_subthreshold_slope(data: ct.Transfer):
     ss = []

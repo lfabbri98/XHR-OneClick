@@ -3,12 +3,13 @@ import pandas as pd
 import Libraries.data_read as dr
 import matplotlib.pyplot as plt
 import Libraries.transfer_analysis as ta
+import Libraries.model as model
 import os
 
 
 def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_file):
     irrad = dr.read_folder(Irrad_path)
-    irrad_data, irrad_par, irrad_err = ta.extract_transfer_data(irrad, Cox, W, L, Total_dose)
+    irrad_data, irrad_par, irrad_err, irrad_first_time = ta.extract_transfer_data(irrad, Cox, W, L, Total_dose)
 
     #Figure 1: plot of transfers in linear scale and log scale
     fig, (ax11, ax12)  = plt.subplots(1,2)
@@ -51,7 +52,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_
     #Recovery
     rec = dr.read_folder(Rec_path)
     use_custom_params, p0_rec = ct.read_recovery_fit(configuration_file)
-    rec_analyzed, recovery_par, recovery_err = ta.extract_transfer_data(rec, Cox, W, L, Total_dose)
+    rec_analyzed, recovery_par, recovery_err, recovery_first_time = ta.extract_transfer_data(rec, Cox, W, L, Total_dose)
     params, errors, rec_fit = ta.recovery_analysis(rec_analyzed, initial_parameters = p0_rec)
 
     #Figure 4: Scatter plot of recovery with stretched exponential fit
@@ -64,7 +65,13 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_
     plt.legend(loc='best')
 
     #Code to solve model
-    model_parameters = ct.read_model_parameters(configuration_file)
+    model_parameters = ct.read_model_parameters(configuration_file) #Read model parameters
+    ft_rec = recovery_first_time-irrad_first_time
+    mo = model.start_model_analysis(irrad_data, rec_analyzed, model_parameters, ft_rec) #Start model analysis
+
+    #Figure 5: plot of combined irradiation and recovery
+    fig5, ax5 = plt.subplots()
+    ax5.plot(mo.Time, mo.Vth)
     
     #Create file with output parameters
     names_params = ["Type","Sensitivity (V/Gy)", "alpha (1/h)", "gamma", "Vth0 (V)"]
