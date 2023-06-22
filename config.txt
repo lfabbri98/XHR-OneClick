@@ -13,10 +13,11 @@
 [settings]
 irradiation_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Transfer/*.dat
 recovery_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Recovery/*.dat
-cox = 1e-9
+cox = 5e-8
 W = 4e-6
 L = 8e-6
 Total_dose = 800
+NumberDevicesInArray = 500
 
 #Use this section to set initial parameters of the recovery fit
 #If UseCustomInitialParameters = no, the parameters are setted automatically
@@ -27,9 +28,6 @@ UseCustomInitialParameters = no
 alpha = 30
 gamma = 0.5
 vth_perm = 1
-
-#Use this section to provide the input for the recovery model
-#Times are in hours
 
 [output]
 Output_Path = ./Output_Results/

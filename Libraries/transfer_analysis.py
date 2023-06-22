@@ -118,7 +118,7 @@ def poly1(x,a,b):
 # Main analysis functions
 #------------------------
 
-def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "linear"):
+def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose,N=1, regime = "linear"):
     """
     Function that takes as input a data frame and returns another data frame containing the threshold voltage, mobility
     and subthreshold slope
@@ -145,7 +145,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose, regime = "li
     #Use the limit values to fit every curve
     for i,j in enumerate(data):
         Vth.append(j.calculate_threshold(ID_min_select))
-        Mu.append(j.calculate_mobility(ID_min_select, Cox, W, L, regime))
+        Mu.append(j.calculate_mobility(ID_min_select, Cox, W, L,N, regime))
         times.append((j.time-data[0].time).total_seconds()) #Relative time from beginning of measure
     
     first_time = data[0].time

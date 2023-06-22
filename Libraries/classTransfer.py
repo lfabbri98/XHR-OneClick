@@ -38,16 +38,16 @@ class Transfer:
         
         return 0
     
-    def calculate_mobility(self, ID_threshold, Cox, W, L, select="linear"):
+    def calculate_mobility(self, ID_threshold, Cox, W, L,N, select="linear"):
         if select == "linear":
             mask = np.where(self.ID>ID_threshold)[0]
             popt, pcov = curve_fit(poly1, self.VG[mask], self.ID[mask])
-            return(popt[0]*L/(W*Cox*self.VD[1]))
+            return(popt[0]*L/(W*Cox*self.VD[1]*N))
         if select == "saturation":
             ID_sqrt = np.sqrt(self.ID)
             mask = np.where(ID_sqrt>ID_threshold)[0]
             popt, pcov = curve_fit(poly1, self.VG[mask], ID_sqrt[mask])
-            return(popt[0]*L*2/(W*Cox))
+            return(popt[0]*L*2/(W*Cox*N))
         
         return 0
     
@@ -87,6 +87,7 @@ def import_parameters(config_path):
     W = config.get("settings","W")
     L = config.get("settings","L")
     Total_dose = config.get("settings","Total_dose")
+    N = config.get("settings","NumberDevicesInArray")
 
     outputpath = config.get("output", "Output_Path")
 
@@ -94,8 +95,9 @@ def import_parameters(config_path):
     W = float(W)
     L = float(L)
     Total_dose = float(Total_dose)
+    N = float(N)
 
-    return irrad_path, rec_path, Cox, W, L,Total_dose, outputpath
+    return irrad_path, rec_path, Cox, W, L,Total_dose, outputpath, N
         
 
 def read_recovery_fit(config_path):
@@ -108,12 +110,3 @@ def read_recovery_fit(config_path):
     gamma = config.get("recovery","gamma")
 
     return use_custom, [float(alpha), float(gamma), float(Vth0)]
-
-def read_model_parameters(config_path):
-    config = configparser.ConfigParser()
-    config.read(config_path)
-
-    irradiation_time = config.get("model","irradiation_time")
-    observation_time = config.get("model", "observation_time")
-
-    return[float(irradiation_time), float(observation_time)]

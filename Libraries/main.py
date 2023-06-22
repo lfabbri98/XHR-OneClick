@@ -7,9 +7,9 @@ import Libraries.model as model
 import os
 
 
-def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_file):
+def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuration_file):
     irrad = dr.read_folder(Irrad_path)
-    irrad_data, irrad_par, irrad_err, irrad_first_time = ta.extract_transfer_data(irrad, Cox, W, L, Total_dose)
+    irrad_data, irrad_par, irrad_err, irrad_first_time = ta.extract_transfer_data(irrad, Cox, W, L, Total_dose,N)
     Vth_pristine = irrad_data.Vth[0]
     Vth_max = irrad_data.Vth.values[-1]-irrad_data.Vth[0]
 
@@ -54,7 +54,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_
     #Recovery
     rec = dr.read_folder(Rec_path)
     use_custom_params, p0_rec = ct.read_recovery_fit(configuration_file)
-    rec_analyzed, recovery_par, recovery_err, recovery_first_time = ta.extract_transfer_data(rec, Cox, W, L, Total_dose)
+    rec_analyzed, recovery_par, recovery_err, recovery_first_time = ta.extract_transfer_data(rec, Cox, W, L, Total_dose,N)
     params, errors, rec_fit = ta.recovery_analysis(rec_analyzed, p0_rec, Vth_pristine, Vth_max)
 
     #Figure 4: Scatter plot of recovery with stretched exponential fit
