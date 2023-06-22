@@ -23,9 +23,10 @@ Total_dose = 800
 #A manual choice could be useful if a good fit is not obtained
 
 [recovery]
-UseCustomInitialParameters = yes
+UseCustomInitialParameters = no
 alpha = 30
 gamma = 0.5
+vth_perm = 1
 
 #Use this section to provide the input for the recovery model
 #Times are in hours

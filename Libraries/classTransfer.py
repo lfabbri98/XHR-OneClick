@@ -103,7 +103,7 @@ def read_recovery_fit(config_path):
     config.read(config_path)
 
     use_custom = config.get("recovery", "UseCustomInitialParameters")
-    Vth0 = config.get("recovery","Vth0")
+    Vth0 = config.get("recovery","vth_perm")
     alpha = config.get("recovery","alpha")
     gamma = config.get("recovery","gamma")
 

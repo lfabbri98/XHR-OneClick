@@ -108,8 +108,8 @@ def max_slope_index(vector):
     
     return max_slope_index
 
-def stretched_exponential(x, alpha, gamma, Vth0):
-    return Vth0 * np.exp(-x**gamma / alpha)
+def stretched_exponential(x, alpha, gamma, Vth_perm, Vth_pristine, Vth_max):
+    return Vth_pristine+(Vth_max-Vth_perm)*np.exp(-x**gamma / alpha) + Vth_perm
 
 def poly1(x,a,b):
     return a*x+b
@@ -200,7 +200,7 @@ def extraction_subthreshold_slope(data: ct.Transfer):
     
     return ss
 
-def recovery_analysis(data, initial_parameters):
+def recovery_analysis(data, initial_parameters, Vth_pristine, Vth_max):
     """
     Data should be a dataframe of the type returned by extract transfer data.
 
@@ -210,12 +210,16 @@ def recovery_analysis(data, initial_parameters):
     #Initialize variables for fit
     X = data.Time
     Y = data.Vth
+    
+    
+    #Define lambda function for fitting
+    fit_func = lambda x, alpha, gamma, Vth_perm : stretched_exponential(x, alpha, gamma, Vth_perm, Vth_pristine, Vth_max)
 
-    popt, pcov = curve_fit(stretched_exponential, X, Y, p0=initial_parameters)
+    popt, pcov = curve_fit(fit_func, X, Y, p0=initial_parameters)
 
     err = np.sqrt(np.diag(pcov))
 
-    fitted = stretched_exponential(X, *popt)
+    fitted = fit_func(X, *popt)
 
     data_out = {"Time":X, "Vth": Y, "Fit": fitted}
     data_out_df = pd.DataFrame(data_out)
