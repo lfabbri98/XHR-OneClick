@@ -54,9 +54,13 @@ class Transfer:
     def calculate_subthreshold(self, min_index, max_index):
         ID_log = []
         for k,l in enumerate(self.ID):
+            try:
                 a = np.log10(self.ID[k])
-                if np.isinf(a): ID_log.append(-8)
-                else: ID_log.append(a)
+            except:
+                a=np.log10(self.ID[k-1])
+               
+            ID_log.append(a)
+        
 
         
         try:

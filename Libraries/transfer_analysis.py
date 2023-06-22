@@ -101,10 +101,11 @@ def max_slope_index(vector):
     differences = np.diff(vector)
     
     # Compute the slopes of the array
-    slopes = differences / vector[:-1]
+    slopes = abs(differences / vector[:-1])
     
     # Find the index with the maximum slope
     max_slope_index = np.argmax(slopes)
+    
     
     return max_slope_index
 
@@ -154,7 +155,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose,N=1, regime =
     dose = np.asarray(dose, dtype="float64")
 
     #Return subthreshold slope
-    ss = extraction_subthreshold_slope(data)
+    ss = extraction_subthreshold_slope(data, Vth)
 
     #Linear fit to find sensitivity, when first derivative is zero
     islinear = np.where(dose>np.median(dose))[0]
@@ -172,7 +173,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose,N=1, regime =
     out = pd.DataFrame(output)
     return out, par, err, first_time
 
-def extraction_subthreshold_slope(data: ct.Transfer):
+def extraction_subthreshold_slope(data: ct.Transfer, Vth):
     ss = []
 
     #First calculate the fitting range to find subthreshold slope
@@ -184,30 +185,22 @@ def extraction_subthreshold_slope(data: ct.Transfer):
         Id = []
         for k in range(len(j.ID)):
             try:
-                a = np.log10(j.ID[k])
-                Id.append(a)
+                Id.append(np.log10(abs(j.ID[k])))
             except:
-                Id.append(1e-12)
-        for f in Id:
-            if np.isnan(f): f=-12
-            if np.isinf(f): f=-12
+                Id.append(np.log10(j.ID[k-1]))
         
-        Id=np.array(Id)
-        rr = np.where(Id>-8)[0]
-        max_id = max_slope_index(Id[rr])
-        vg_max = vg[max_id]
+        Id = np.array(Id)
+        rr =np.where(vg<Vth[i])[0]
+        rr1 = np.where(Id>-7)[0]
+        rr = np.intersect1d(rr,rr1)
+        max_ind = max_slope_index(Id[rr])
+        print(max_ind)
 
-        try:
-            vg_low = max_id - int(max_id*10/100)
-            vg_high = max_id + int(max_id*10/100)
-
-        except:
-            vg_low = 0
-            vg_high = 10
-
+        vg_low = max_ind-5
+        vg_high=max_ind+5
         ss.append(j.calculate_subthreshold(vg_low, vg_high))
         #ss.append(1)
-    
+    print("end")
     return ss
 
 def recovery_analysis(data, initial_parameters, Vth_pristine, Vth_max):
