@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import Libraries.transfer_analysis as ta
 import Libraries.model as model
 import os
+import datetime as dt
 
 
 def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuration_file):
@@ -55,12 +56,30 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
     rec = dr.read_folder(Rec_path)
     use_custom_params, p0_rec = ct.read_recovery_fit(configuration_file)
     rec_analyzed, recovery_par, recovery_err, recovery_first_time = ta.extract_transfer_data(rec, Cox, W, L, Total_dose,N)
-    params, errors, rec_fit = ta.recovery_analysis(rec_analyzed, p0_rec, Vth_pristine, Vth_max)
+    
+    #Add last point of irradiation
+    last = irrad_data.values[-1]
+    first_time = last[0]
+    ft = (recovery_first_time-irrad[0].time).total_seconds()
+    last[0] = last[0]-(recovery_first_time-irrad[0].time).total_seconds()
+    rec_analyzed.loc[-1] = last
+    rec_analyzed.index = rec_analyzed.index+1
+    rec_analyzed.sort_index(inplace=True)
+    
+    
+    for i in range(len(rec_analyzed)):
+        rec_analyzed.Time[i]= rec_analyzed.Time[i] + abs(first_time)
+
+
+    rec_analyzed_fit = rec_analyzed
+    rec_analyzed_fit.Time = rec_analyzed_fit.Time-rec_analyzed_fit.Time[0]
+    params, errors, rec_fit = ta.recovery_analysis(rec_analyzed_fit, p0_rec, Vth_pristine, Vth_max)
+    
 
     #Figure 4: Scatter plot of recovery with stretched exponential fit
     fig4, ax4 = plt.subplots()
-    ax4.plot(rec_fit.Time/3600, rec_fit.Vth, marker = 'o', label="Experimental data")
-    ax4.plot(rec_fit.Time/3600, rec_fit.Fit, label="Stretched exponential fit")
+    ax4.plot((rec_analyzed.Time+ft)/3600, rec_fit.Vth, marker = 'o', label="Experimental data")
+    ax4.plot((rec_analyzed.Time+ft)/3600, rec_fit.Fit, label="Stretched exponential fit")
     ax4.set_xlabel("Time (h)")
     ax4.set_ylabel("$V_{th}$ (V)")
     ax4.set_title("Recovery")
