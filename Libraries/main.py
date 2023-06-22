@@ -64,14 +64,6 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath, configuration_
     ax4.set_title("Recovery")
     plt.legend(loc='best')
 
-    #Code to solve model
-    model_parameters = ct.read_model_parameters(configuration_file) #Read model parameters
-    ft_rec = recovery_first_time-irrad_first_time
-    mo = model.start_model_analysis(irrad_data, rec_analyzed, model_parameters, ft_rec) #Start model analysis
-
-    #Figure 5: plot of combined irradiation and recovery
-    fig5, ax5 = plt.subplots()
-    ax5.plot(mo.Time, mo.Vth)
     
     #Create file with output parameters
     names_params = ["Type","Sensitivity (V/Gy)", "alpha (1/h)", "gamma", "Vth0 (V)"]

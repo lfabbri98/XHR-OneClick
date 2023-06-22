@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.integrate import solve_ivp
 import pandas as pd
+from scipy.optimize import curve_fit
 
 #Differential equation
 def dydx(x,y, sens, IT, R, dvth0, gamma, alpha):
@@ -58,7 +59,16 @@ def combine_model_data(irrad_data, recovery_data, recovery_first_time):
 
 
 
-def start_model_analysis(irrad_data, recovery_data, model_parameters, recovery_first_time):
+def start_model_analysis(irrad_data, recovery_data, model_parameters, recovery_first_time, total_dose, p0_fit):
     df = combine_model_data(irrad_data, recovery_data, recovery_first_time)
+
+    #Perform model fitting 
+    
+    #Define fitting function
+    fit_func = lambda x, sens, dvth0, gamma, alpha: solve_xray(x, sens, model_parameters[0],model_parameters[1],total_dose,1000, dvth0, gamma, alpha)
+    
+    #Fit
+    popt, pcov = curve_fit(fit_func, df.Time, df.Vth, p0=p0_fit)
+    
     return df
 
