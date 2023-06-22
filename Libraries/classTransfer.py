@@ -52,9 +52,18 @@ class Transfer:
         return 0
     
     def calculate_subthreshold(self, min_index, max_index):
-        ID_log = np.log10(pd.to_numeric(self.ID))
-        popt, pcov = curve_fit(poly1, self.VG[min_index:max_index], ID_log[min_index:max_index])
-        return(1/popt[0])
+        ID_log = []
+        for k,l in enumerate(self.ID):
+                a = np.log10(self.ID[k])
+                if np.isinf(a): ID_log.append(-8)
+                else: ID_log.append(a)
+
+        
+        try:
+            popt, pcov = curve_fit(poly1, self.VG[min_index:max_index], ID_log[min_index:max_index])
+            return(1/popt[0])
+        except:
+            return 0.1
 
 
     #Function to plot transfer in log and lin scale

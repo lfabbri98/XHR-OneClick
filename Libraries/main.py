@@ -31,25 +31,32 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
 
     #Figure 2: Plot of threshold variation in function of dose
     fig2, ax2 = plt.subplots()
-    ax2.plot(irrad_data.Dose, irrad_data.Vth)
-    ax2.plot(irrad_data.Dose, ct.poly1(irrad_data.Dose, *irrad_par ))
+    ax2.plot(irrad_data.Dose, irrad_data.Vth, label="Data")
+    ax2.plot(irrad_data.Dose, ct.poly1(irrad_data.Dose, *irrad_par ), label="Linear fit")
     ax2.set_xlabel("Dose (Gy)")
     ax2.set_ylabel("$V_{th}$ (V)")
     ax2.set_title("Threshold in function of dose")
+    ax2.legend(loc='best')
     fig2.tight_layout()
 
     print("Threshold shift = ",irrad_data.Vth.values[-1]-irrad_data.Vth[0],"V")
 
     #Figure 3: Plot of mobility and subthreshold variation in function of dose
-    fig3, (ax31, ax32) = plt.subplots(1,2)
-    ax31.plot(irrad_data.Dose, irrad_data.Mobility)
-    ax32.plot(irrad_data.Dose, irrad_data.SS)
-    ax31.set_xlabel("Dose (Gy)")
-    ax31.set_ylabel("$\mu (cm^2 /Vs)$")
-    ax31.set_title("Mobility")
-    ax32.set_xlabel("Dose (Gy)")
-    ax32.set_ylabel("Subthreshold slope (V/dec)")
-    ax32.set_title("Subthreshold slope")
+    #fig3, (ax31, ax32) = plt.subplots(1,2)
+    fig3, ax3 = plt.subplots()
+    ax3.plot(irrad_data.Dose, irrad_data.Mobility)
+    #ax31.plot(irrad_data.Dose, irrad_data.Mobility)
+    #ax32.plot(irrad_data.Dose, irrad_data.SS)
+    #ax31.set_xlabel("Dose (Gy)")
+    #ax31.set_ylabel("$\mu (cm^2 /Vs)$")
+    ax3.set_xlabel("Dose (Gy)")
+    ax3.set_ylabel("$\mu (cm^2 /Vs)$")
+    #ax31.set_title("Mobility")
+    ax3.set_title("Mobility")
+    #ax32.set_xlabel("Dose (Gy)")
+    #ax32.set_ylabel("Subthreshold slope (V/dec)")
+    #ax32.set_title("Subthreshold slope")
+    #ax32.set_ylim(0,0.2)
     fig3.tight_layout()
 
     #Recovery

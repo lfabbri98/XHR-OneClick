@@ -179,24 +179,34 @@ def extraction_subthreshold_slope(data: ct.Transfer):
     #We can use the maximum slope as reference point and define a tolerance around it
     for i,j in enumerate(data):
         vg = j.VG
-        j.ID = replace_zeros(j.ID)
+        #j.ID = remove_nans_infs(j.ID)
 
-        id = []
-        for k,l in enumerate(j.ID):
-            id.append(np.log10(l))
-        id_prime = derivative(id)
-        id_prime = remove_nans_infs(np.array(id_prime))
-        max_id = max_slope_index(id)
+        Id = []
+        for k in range(len(j.ID)):
+            try:
+                a = np.log10(j.ID[k])
+                Id.append(a)
+            except:
+                Id.append(1e-12)
+        for f in Id:
+            if np.isnan(f): f=-12
+            if np.isinf(f): f=-12
+        
+        Id=np.array(Id)
+        rr = np.where(Id>-8)[0]
+        max_id = max_slope_index(Id[rr])
         vg_max = vg[max_id]
-        try:
-            vg_low = max_id - int(max_id * 30/100)
-            vg_high = max_id + int(max_id*30/100)
-        except:
-            vg_low = 200-10
-            vg_high = 200-10
 
-        #ss.append(j.calculate_subthreshold(vg_low, vg_high))
-        ss.append(1)
+        try:
+            vg_low = max_id - int(max_id*10/100)
+            vg_high = max_id + int(max_id*10/100)
+
+        except:
+            vg_low = 0
+            vg_high = 10
+
+        ss.append(j.calculate_subthreshold(vg_low, vg_high))
+        #ss.append(1)
     
     return ss
 
