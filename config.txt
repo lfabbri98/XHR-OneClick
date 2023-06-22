@@ -10,6 +10,8 @@
 
 #For yes/no choices use the correct syntax otherwise the program does not work correctly
 
+#Settings measure unit: cox(F/cm^2), W,L (m), Total_dose (Gy)
+
 [settings]
 irradiation_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Transfer/*.dat
 recovery_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Recovery/*.dat
