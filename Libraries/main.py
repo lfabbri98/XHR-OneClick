@@ -51,7 +51,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
     ax32.set_xlabel("Dose (Gy)")
     ax32.set_ylabel("Subthreshold slope (V/dec)")
     ax32.set_title("Subthreshold slope")
-    #ax32.set_ylim(0,5)
+    ax32.set_ylim(0)
     fig3.tight_layout()
 
     #Recovery

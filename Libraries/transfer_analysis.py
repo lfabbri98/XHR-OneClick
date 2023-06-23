@@ -191,16 +191,14 @@ def extraction_subthreshold_slope(data: ct.Transfer, Vth):
         
         Id = np.array(Id)
         rr =np.where(vg<Vth[i])[0]
-        rr1 = np.where(Id>-7)[0]
+        rr1 = np.where(Id>-10)[0]
         rr = np.intersect1d(rr,rr1)
         max_ind = max_slope_index(Id[rr])
-        print(max_ind)
 
         vg_low = max_ind-5
         vg_high=max_ind+5
         ss.append(j.calculate_subthreshold(vg_low, vg_high))
         #ss.append(1)
-    print("end")
     return ss
 
 def recovery_analysis(data, initial_parameters, Vth_pristine, Vth_max):
