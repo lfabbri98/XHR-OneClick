@@ -191,8 +191,8 @@ def extraction_subthreshold_slope(data: ct.Transfer, Vth):
                 Id.append(np.log10(j.ID[k-1]))
         
         Id = np.array(Id)
-        rr =np.where(vg<Vth[i])[0]
-        rr1 = np.where(Id>-10)[0]
+        rr =np.where(Id<-5)[0]
+        rr1 = np.where(Id>-10.5)[0]
         rr = np.intersect1d(rr,rr1)
         max_ind = max_slope_index(Id[rr])
 

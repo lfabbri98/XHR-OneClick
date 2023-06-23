@@ -64,7 +64,7 @@ class Transfer:
         
         try:
             popt, pcov = curve_fit(poly1, self.VG[min_index:max_index], ID_log[min_index:max_index])
-            von = (-12-popt[1])/popt[0]
+            von = (-11-popt[1])/popt[0]
             if von<min(self.VG): print("Von out of measure range!")
             return 1/popt[0] , von
 

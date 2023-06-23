@@ -16,6 +16,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
 
     #Figure 1: plot of transfers in linear scale and log scale
     fig, (ax11, ax12)  = plt.subplots(1,2)
+    fig.canvas.manager.set_window_title('Irradiation')
     for i in irrad:
         ax11.plot(i.VG, i.ID/1e-6)
         ax12.plot(i.VG, i.ID)
@@ -31,6 +32,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
 
     #Figure 2: Plot of threshold variation in function of dose
     fig2, ax2 = plt.subplots()
+    fig2.canvas.manager.set_window_title('Irradiation')
     ax2.plot(irrad_data.Dose, irrad_data.Vth, label="Data")
     ax2.plot(irrad_data.Dose, ct.poly1(irrad_data.Dose, *irrad_par ), label="Linear fit")
     ax2.set_xlabel("Dose (Gy)")
@@ -39,10 +41,9 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
     ax2.legend(loc='best')
     fig2.tight_layout()
 
-    print("Threshold shift = ",irrad_data.Vth.values[-1]-irrad_data.Vth[0],"V")
-
     #Figure 3: Plot of mobility and subthreshold variation in function of dose
     fig3, (ax31, ax32, ax33) = plt.subplots(1,3)
+    fig3.canvas.manager.set_window_title('Irradiation')
     ax31.plot(irrad_data.Dose, irrad_data.Mobility)
     ax32.plot(irrad_data.Dose, irrad_data.SS, ls='none', marker='o')
     ax33.plot(irrad_data.Dose, irrad_data.Von, ls='none', marker='o')
@@ -55,6 +56,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
     ax32.set_ylabel("Subthreshold slope (V/dec)")
     ax32.set_title("Subthreshold slope")
     ax32.set_ylim(0)
+    ax33.set_title("Von")
     fig3.tight_layout()
 
     #Recovery
@@ -83,12 +85,31 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
 
     #Figure 4: Scatter plot of recovery with stretched exponential fit
     fig4, ax4 = plt.subplots()
+    fig4.canvas.manager.set_window_title('Recovery')
     ax4.plot((rec_analyzed.Time+ft)/3600, rec_fit.Vth, marker = 'o', label="Experimental data")
     ax4.plot((rec_analyzed.Time+ft)/3600, rec_fit.Fit, label="Stretched exponential fit")
     ax4.set_xlabel("Time (h)")
     ax4.set_ylabel("$V_{th}$ (V)")
     ax4.set_title("Recovery")
     plt.legend(loc='best')
+
+    #Figure 5: Plot of mobility and subthreshold variation in function of dose during recovery
+    fig5, (ax51, ax52, ax53) = plt.subplots(1,3)
+    fig5.canvas.manager.set_window_title('Recovery')
+    ax51.plot((rec_analyzed.Time+ft)/3600, rec_analyzed.Mobility)
+    ax52.plot((rec_analyzed.Time+ft)/3600, rec_analyzed.SS, ls='none', marker='o')
+    ax53.plot((rec_analyzed.Time+ft)/3600, rec_analyzed.Von, ls='none', marker='o')
+    ax53.set_xlabel("Time (h)")
+    ax53.set_ylabel("$V_{on}$ (V)")
+    ax51.set_xlabel("Time (h)")
+    ax51.set_ylabel("$\mu (cm^2 /Vs)$")
+    ax51.set_title("Mobility")
+    ax52.set_xlabel("Time (h)")
+    ax52.set_ylabel("Subthreshold slope (V/dec)")
+    ax52.set_title("Subthreshold slope")
+    ax53.set_title("Von")
+    ax52.set_ylim(0)
+    fig5.tight_layout()
 
     
     #Create file with output parameters
