@@ -42,9 +42,12 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
     print("Threshold shift = ",irrad_data.Vth.values[-1]-irrad_data.Vth[0],"V")
 
     #Figure 3: Plot of mobility and subthreshold variation in function of dose
-    fig3, (ax31, ax32) = plt.subplots(1,2)
+    fig3, (ax31, ax32, ax33) = plt.subplots(1,3)
     ax31.plot(irrad_data.Dose, irrad_data.Mobility)
     ax32.plot(irrad_data.Dose, irrad_data.SS, ls='none', marker='o')
+    ax33.plot(irrad_data.Dose, irrad_data.Von, ls='none', marker='o')
+    ax33.set_xlabel("Dose (Gy)")
+    ax33.set_ylabel("$V_{on}$ (V)")
     ax31.set_xlabel("Dose (Gy)")
     ax31.set_ylabel("$\mu (cm^2 /Vs)$")
     ax31.set_title("Mobility")
@@ -106,8 +109,9 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
         os.makedirs(directory_name)
     print("Directory", directory_name, "created.")
 
-    irrad_data.to_csv(directory_name+"Transfer_results.txt", sep="\t")
+    irrad_data.to_csv(directory_name+"Irradiation_transfer_analysis.txt", sep="\t")
     rec_fit.to_csv(directory_name+"Recovery_output.txt", sep="\t")
     output_params.to_csv(directory_name+"Parameters_output.txt", sep="\t")
+    rec_analyzed.to_csv(directory_name+"Recovery_transfer_analysis", sep="\t")
 
     plt.show()

@@ -155,7 +155,7 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose,N=1, regime =
     dose = np.asarray(dose, dtype="float64")
 
     #Return subthreshold slope
-    ss = extraction_subthreshold_slope(data, Vth)
+    ss, Von = extraction_subthreshold_slope(data, Vth)
 
     #Linear fit to find sensitivity, when first derivative is zero
     islinear = np.where(dose>np.median(dose))[0]
@@ -169,12 +169,13 @@ def extract_transfer_data(data: ct.Transfer, Cox, W, L, Total_dose,N=1, regime =
         err = [1,1]
 
     #Create the output dataframe
-    output = {"Time": times, "Dose": dose, "Vth": Vth, "Mobility":Mu, "SS":ss }
+    output = {"Time": times, "Dose": dose, "Vth": Vth, "Mobility":Mu, "SS":ss, "Von":Von }
     out = pd.DataFrame(output)
     return out, par, err, first_time
 
 def extraction_subthreshold_slope(data: ct.Transfer, Vth):
     ss = []
+    Von = []
 
     #First calculate the fitting range to find subthreshold slope
     #We can use the maximum slope as reference point and define a tolerance around it
@@ -197,9 +198,13 @@ def extraction_subthreshold_slope(data: ct.Transfer, Vth):
 
         vg_low = max_ind-5
         vg_high=max_ind+5
-        ss.append(j.calculate_subthreshold(vg_low, vg_high))
+        s, von = (j.calculate_subthreshold(vg_low, vg_high))
+        ss.append(s)
+        Von.append(von)
         #ss.append(1)
-    return ss
+    return ss, Von
+
+
 
 def recovery_analysis(data, initial_parameters, Vth_pristine, Vth_max):
     """

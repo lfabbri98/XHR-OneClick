@@ -61,13 +61,15 @@ class Transfer:
                
             ID_log.append(a)
         
-
         
         try:
             popt, pcov = curve_fit(poly1, self.VG[min_index:max_index], ID_log[min_index:max_index])
-            return(1/popt[0])
+            von = (-12-popt[1])/popt[0]
+            if von<min(self.VG): print("Von out of measure range!")
+            return 1/popt[0] , von
+
         except:
-            return 0.1
+            return 0.1, 0.1
 
 
     #Function to plot transfer in log and lin scale
