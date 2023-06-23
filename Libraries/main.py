@@ -8,7 +8,7 @@ import os
 import datetime as dt
 
 
-def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuration_file):
+def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, configuration_file):
     irrad = dr.read_folder(Irrad_path)
     irrad_data, irrad_par, irrad_err, irrad_first_time = ta.extract_transfer_data(irrad, Cox, W, L, Total_dose,N)
     Vth_pristine = irrad_data.Vth[0]
@@ -29,6 +29,8 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N, configuratio
     ax12.set_title("Transfers in log scale")
 
     fig.tight_layout()
+
+    #Add plot of recovery transfers and plot only N transfers
 
     #Figure 2: Plot of threshold variation in function of dose
     fig2, ax2 = plt.subplots()

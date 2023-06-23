@@ -20,7 +20,7 @@ import Libraries.classTransfer
 # Read parameters
 #------------------------
 
-Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N = Libraries.classTransfer.import_parameters(config_path=configuration_file)
+Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans = Libraries.classTransfer.import_parameters(config_path=configuration_file)
 
 #------------------------
 # Start execution

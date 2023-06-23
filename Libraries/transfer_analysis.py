@@ -100,11 +100,8 @@ def max_slope_index(vector):
     # Compute the differences between adjacent elements of the array
     differences = np.diff(vector)
     
-    # Compute the slopes of the array
-    slopes = abs(differences / vector[:-1])
-    
     # Find the index with the maximum slope
-    max_slope_index = np.argmax(slopes)
+    max_slope_index = np.argmax(differences)
     
     
     return max_slope_index
@@ -196,9 +193,9 @@ def extraction_subthreshold_slope(data: ct.Transfer, Vth):
         rr = np.intersect1d(rr,rr1)
         max_ind = max_slope_index(Id[rr])
 
-        vg_low = max_ind-5
-        vg_high=max_ind+5
-        s, von = (j.calculate_subthreshold(vg_low, vg_high))
+        i_vg_low = max_ind-1
+        i_vg_high=max_ind+2
+        s, von = (j.calculate_subthreshold(i_vg_low, i_vg_high))
         ss.append(s)
         Von.append(von)
         #ss.append(1)

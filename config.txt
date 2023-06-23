@@ -31,5 +31,7 @@ alpha = 5
 gamma = 0.5
 vth_perm = -40
 
+#MaximumNumberTransfer is the maximum number of plotted transfers
 [output]
 Output_Path = ./Output_Results/
+MaximumNumberTransfer = 10

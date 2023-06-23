@@ -69,7 +69,7 @@ class Transfer:
             return 1/popt[0] , von
 
         except:
-            return 0.1, 0.1
+            return float('NaN'), float('NaN')
 
 
     #Function to plot transfer in log and lin scale
@@ -103,6 +103,7 @@ def import_parameters(config_path):
     L = config.get("settings","L")
     Total_dose = config.get("settings","Total_dose")
     N = config.get("settings","NumberDevicesInArray")
+    Ntrans = config.get("Output", "MaximumNumberTransfer")
 
     outputpath = config.get("output", "Output_Path")
 
@@ -111,8 +112,9 @@ def import_parameters(config_path):
     L = float(L)
     Total_dose = float(Total_dose)
     N = float(N)
+    Ntrans = float()
 
-    return irrad_path, rec_path, Cox, W, L,Total_dose, outputpath, N
+    return irrad_path, rec_path, Cox, W, L,Total_dose, outputpath, N, Ntrans
         
 
 def read_recovery_fit(config_path):
