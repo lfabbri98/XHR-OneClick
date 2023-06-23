@@ -191,7 +191,7 @@ def extraction_subthreshold_slope(data: ct.Transfer, Vth):
                 Id.append(np.log10(j.ID[k-1]))
         
         Id = np.array(Id)
-        rr =np.where(Id<-5)[0]
+        rr =np.where(Id<-1)[0]
         rr1 = np.where(Id>-10.5)[0]
         rr = np.intersect1d(rr,rr1)
         max_ind = max_slope_index(Id[rr])
@@ -220,16 +220,18 @@ def recovery_analysis(data, initial_parameters, Vth_pristine, Vth_max):
     
     #Define lambda function for fitting
     fit_func = lambda x, alpha, gamma, Vth_perm : stretched_exponential(x, alpha, gamma, Vth_perm, Vth_pristine, Vth_max)
+    try:
+        popt, pcov = curve_fit(fit_func, X, Y, p0=initial_parameters)
 
-    popt, pcov = curve_fit(fit_func, X, Y, p0=initial_parameters)
+        err = np.sqrt(np.diag(pcov))
 
-    err = np.sqrt(np.diag(pcov))
+        fitted = fit_func(X, *popt)
 
-    fitted = fit_func(X, *popt)
+        data_out = {"Time":X, "Vth": Y, "Fit": fitted}
+        data_out_df = pd.DataFrame(data_out)
 
-    data_out = {"Time":X, "Vth": Y, "Fit": fitted}
-    data_out_df = pd.DataFrame(data_out)
-
-    return popt,err, data_out_df
+        return popt,err, data_out_df
+    except:
+        print("Optimal parameters not found! Put them manually from config file")
 
 

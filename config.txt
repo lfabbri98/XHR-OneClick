@@ -13,23 +13,23 @@
 #Settings measure unit: cox(F/cm^2), W,L (m), Total_dose (Gy)
 
 [settings]
-irradiation_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Transfer/*.dat
-recovery_folder_path = ./Test_datasets/Sample_1_TotalDose800Gy/Recovery/*.dat
+irradiation_folder_path = ./Test_datasets/Test_3_TotalDose_200Gy/*.dat
+recovery_folder_path = ./Test_datasets/Test_3_TotalDose_200Gy/Recovery/*.dat
 cox = 5e-8
-W = 4e-6
-L = 8e-6
-Total_dose = 800
-NumberDevicesInArray = 500
+W = 9.5e-6
+L = 15e-6
+Total_dose = 200
+NumberDevicesInArray = 400
 
 #Use this section to set initial parameters of the recovery fit
 #If UseCustomInitialParameters = no, the parameters are setted automatically
 #A manual choice could be useful if a good fit is not obtained
 
 [recovery]
-UseCustomInitialParameters = no
-alpha = 30
+UseCustomInitialParameters = yes
+alpha = 5
 gamma = 0.5
-vth_perm = 1
+vth_perm = -40
 
 [output]
 Output_Path = ./Output_Results/

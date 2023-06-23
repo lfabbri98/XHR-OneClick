@@ -1,0 +1,3 @@
+#scan	iMeasureCycle=1	iMux=0	time=0.021	N=1	LocalTime=23/06/2023 10:02:58
+#VGate(V)	IGate(A)	time(s)	VDrain(V)	IDrain(A)	time(s)
+0	0	0.021	0	0	0.021
