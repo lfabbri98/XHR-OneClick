@@ -20,4 +20,11 @@ Each configuration file must be divided in some sections:
 ### 2. Start the program
 To start the analysis, open the python file **start_analysis.py** and change the path of configuration file in the first section. *Do not modify all the lines below!*
 
+### Dependencies
+Be sure to have installed the following packages:
+-numpy
+-scipy
+-matplotlib
+-pandas
+-configparser
  
