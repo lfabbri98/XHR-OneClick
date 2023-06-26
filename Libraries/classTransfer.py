@@ -103,7 +103,7 @@ def import_parameters(config_path):
     L = config.get("settings","L")
     Total_dose = config.get("settings","Total_dose")
     N = config.get("settings","NumberDevicesInArray")
-    Ntrans = config.get("Output", "MaximumNumberTransfer")
+    Ntrans = config.get("output", "MaximumNumberTransfer")
 
     outputpath = config.get("output", "Output_Path")
 
@@ -112,7 +112,7 @@ def import_parameters(config_path):
     L = float(L)
     Total_dose = float(Total_dose)
     N = float(N)
-    Ntrans = float()
+    Ntrans = float(Ntrans)
 
     return irrad_path, rec_path, Cox, W, L,Total_dose, outputpath, N, Ntrans
         

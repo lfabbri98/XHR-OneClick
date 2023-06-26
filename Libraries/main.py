@@ -6,6 +6,7 @@ import Libraries.transfer_analysis as ta
 import Libraries.model as model
 import os
 import datetime as dt
+import numpy as np
 
 
 def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, configuration_file):
@@ -14,12 +15,17 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, confi
     Vth_pristine = irrad_data.Vth[0]
     Vth_max = irrad_data.Vth.values[-1]-irrad_data.Vth[0]
 
+    length_irrad = len(irrad)
+    Ntrans_in = Ntrans
+    if Ntrans_in > length_irrad: Ntrans_in = length_irrad-1
+    to_plot_irrad = np.linspace(0,length_irrad-1, int(Ntrans), dtype=int)
+
     #Figure 1: plot of transfers in linear scale and log scale
     fig, (ax11, ax12)  = plt.subplots(1,2)
     fig.canvas.manager.set_window_title('Irradiation')
-    for i in irrad:
-        ax11.plot(i.VG, i.ID/1e-6)
-        ax12.plot(i.VG, i.ID)
+    for i in to_plot_irrad:
+        ax11.plot(irrad[i].VG, irrad[i].ID/1e-6)
+        ax12.plot(irrad[i].VG, irrad[i].ID)
     ax11.set_xlabel("$V_G$ (V)")
     ax11.set_ylabel("$I_D (\mu A)$")
     ax11.set_title("Transfers in linear scale")
@@ -65,6 +71,28 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, confi
     rec = dr.read_folder(Rec_path)
     use_custom_params, p0_rec = ct.read_recovery_fit(configuration_file)
     rec_analyzed, recovery_par, recovery_err, recovery_first_time = ta.extract_transfer_data(rec, Cox, W, L, Total_dose,N)
+
+
+    length_rec = len(rec)
+    Ntrans_in =Ntrans
+    if Ntrans_in > length_rec: Ntrans_in = length_rec-1
+    to_plot_irrad = np.linspace(0,length_rec-1, int(Ntrans_in), dtype=int)
+
+    #Fig 4.-1: transfer plots recovery
+    fig41, (ax411, ax412)  = plt.subplots(1,2)
+    fig41.canvas.manager.set_window_title('Recovery')
+    for i in to_plot_irrad:
+        ax411.plot(rec[i].VG, rec[i].ID/1e-6)
+        ax412.plot(rec[i].VG, rec[i].ID)
+    ax411.set_xlabel("$V_G$ (V)")
+    ax411.set_ylabel("$I_D (\mu A)$")
+    ax411.set_title("Transfers in linear scale")
+    ax412.set_xlabel("$V_G$ (V)")
+    ax412.set_ylabel("$I_D$ (A)")
+    ax412.set_yscale("log")
+    ax412.set_title("Transfers in log scale")
+
+    fig41.tight_layout()
     
     #Add last point of irradiation
     last = irrad_data.values[-1]
