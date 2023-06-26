@@ -51,16 +51,7 @@ class Transfer:
         
         return 0
     
-    def calculate_subthreshold(self, min_index, max_index):
-        ID_log = []
-        for k,l in enumerate(self.ID):
-            try:
-                a = np.log10(self.ID[k])
-            except:
-                a=np.log10(self.ID[k-1])
-               
-            ID_log.append(a)
-        
+    def calculate_subthreshold(self, min_index, max_index, ID_log):
         
         try:
             popt, pcov = curve_fit(poly1, self.VG[min_index:max_index], ID_log[min_index:max_index])

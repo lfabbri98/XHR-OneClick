@@ -47,6 +47,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, confi
     ax2.set_ylabel("$V_{th}$ (V)")
     ax2.set_title("Threshold in function of dose")
     ax2.legend(loc='best')
+    ax2.text(min(irrad_data.Dose),min(irrad_data.Vth), "s ="+str(irrad_par[0])+" V/Gy" )
     fig2.tight_layout()
 
     #Figure 3: Plot of mobility and subthreshold variation in function of dose
@@ -111,7 +112,7 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, confi
     rec_analyzed_fit = rec_analyzed
     rec_analyzed_fit.Time = rec_analyzed_fit.Time-rec_analyzed_fit.Time[0]
     params, errors, rec_fit = ta.recovery_analysis(rec_analyzed_fit, p0_rec, Vth_pristine, Vth_max)
-    
+    string_rec = "alpha="+str(params[0])+"\n"+"gamma="+str(params[1])+"\n"+"DVth_perm="+str(params[2])
 
     #Figure 4: Scatter plot of recovery with stretched exponential fit
     fig4, ax4 = plt.subplots()
@@ -121,7 +122,10 @@ def main(Irrad_path, Rec_path, Cox, W, L, Total_dose, outputpath,N,Ntrans, confi
     ax4.set_xlabel("Time (h)")
     ax4.set_ylabel("$V_{th}$ (V)")
     ax4.set_title("Recovery")
-    plt.legend(loc='best')
+    ax4.legend(loc='upper left')
+    ax4.text(min((rec_analyzed.Time+ft)/3600)+10,min((rec_analyzed.Vth)), string_rec)
+    fig4.tight_layout()
+
 
     #Figure 5: Plot of mobility and subthreshold variation in function of dose during recovery
     fig5, (ax51, ax52, ax53) = plt.subplots(1,3)

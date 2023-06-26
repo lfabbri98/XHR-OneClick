@@ -195,7 +195,7 @@ def extraction_subthreshold_slope(data: ct.Transfer, Vth):
 
         i_vg_low = max_ind-1
         i_vg_high=max_ind+2
-        s, von = (j.calculate_subthreshold(i_vg_low, i_vg_high))
+        s, von = (j.calculate_subthreshold(i_vg_low, i_vg_high, Id))
         ss.append(s)
         Von.append(von)
         #ss.append(1)
